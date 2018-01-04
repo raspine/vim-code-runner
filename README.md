@@ -1,5 +1,5 @@
 # vim-code-runner
-====================
+===============================
 ### Single file compiler/runner for c/c++ code ###
 I wanted a simple way to compile and run code snippets directly in Vim.
 
