@@ -1,10 +1,10 @@
 # vim-code-runner
-===============================
+=============================
 ### Single file compiler/runner for c/c++ code ###
 I wanted a simple way to compile and run code snippets directly in Vim.
 
-Some web site like http://en.cppreference.com/w/ offers a convenient way to
-selct compiler/standard in their web code runner and I wanted something similar.
+Some websites like http://en.cppreference.com/w/ offers a convenient way to
+select compiler/standard in their web code runner and I wanted something similar.
 
 vim-code-runner lets you choose compiler/standard and extends to also let you
 choose flags/libs interactively,
