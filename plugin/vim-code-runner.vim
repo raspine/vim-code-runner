@@ -91,7 +91,7 @@ function! s:DirectCompile()
 endfunction
 
 function! s:RunCode()
-    let s:cmd = expand('%:<')
+    let s:cmd = expand('%<')
     if exists(":AsyncRun")
         execute 'copen'
         execute 'AsyncRun ' . s:cmd
