@@ -27,10 +27,12 @@ Runs the executable.
 These variables can be set according to your preference as a default start
 (and be able to run DirectCompile directly).
 
+```vimL
 let g:code_runner_compiler = 'g++'
 let g:code_runner_standard = 'c++14'
 let g:code_runner_flags = '-O2'
 let g:code_runner_libs = ''
+```
 
 ## License
 
