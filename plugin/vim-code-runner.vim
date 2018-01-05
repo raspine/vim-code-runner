@@ -110,6 +110,9 @@ endfunction
 
 function! s:RunCode()
     let s:cmd = expand('%<')
+    if !has('win32') && !(s:cmd =~ '/')
+        let s:cmd = './' . s:cmd
+    endif
     if exists(":AsyncRun")
         execute 'copen'
         execute 'AsyncRun ' . s:cmd
