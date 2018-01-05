@@ -8,16 +8,32 @@ endif
 let g:loaded_vim_code_runner = 1
 
 " public interface
-command -nargs=0 InteractiveCompile call s:InteractiveCompile()
-command -nargs=0 DirectCompile call s:DirectCompile()
-command -nargs=0 RunCode call s:RunCode()
+command! -nargs=0 InteractiveCompile call s:InteractiveCompile()
+command! -nargs=0 DirectCompile call s:DirectCompile()
+command! -nargs=0 RunCode call s:RunCode()
 
-let g:code_runner_compiler = ''
-let g:code_runner_standard = ''
-let g:code_runner_flags = ''
-let g:code_runner_libs = ''
+let s:code_runner_compiler = ''
+let s:code_runner_standard = ''
+let s:code_runner_flags = ''
+let s:code_runner_libs = ''
 
 " local functions
+" global vars are used for init unless the session already modified them
+function! s:InitVars()
+    if empty(s:code_runner_compiler)
+        let s:code_runner_compiler = g:code_runner_compiler
+    endif
+    if empty(s:code_runner_standard)
+        let s:code_runner_standard = g:code_runner_standard
+    endif
+    if empty(s:code_runner_flags)
+        let s:code_runner_flags = g:code_runner_flags
+    endif
+    if empty(s:code_runner_libs)
+        let s:code_runner_libs = g:code_runner_libs
+    endif
+endfunction
+
 function! s:GetKeyFromValue(dict, value)
     for [key,value] in items(a:dict)
         if value == a:value
@@ -48,12 +64,12 @@ function! s:SelectFromDictionary(dict, default)
 endfunction
 
 function! s:DoCompile()
-    let s:cmd = g:code_runner_compiler . 
+    let s:cmd = s:code_runner_compiler . 
                 \ ' ' . expand('%') . ' -o ' . expand('%<') .
-                \ ' --std=' . g:code_runner_standard .
+                \ ' --std=' . s:code_runner_standard .
                 \ ' -Wall -Wextra -Wpedantic ' .
-                \ g:code_runner_flags . ' ' .
-                \ g:code_runner_libs
+                \ s:code_runner_flags . ' ' .
+                \ s:code_runner_libs
     if exists(":AsyncRun")
         execute 'copen'
         execute 'AsyncRun ' . s:cmd
@@ -65,27 +81,29 @@ function! s:DoCompile()
 endfunction
 
 function! s:InteractiveCompile()
+    call s:InitVars()
     let s:compilers = { 1:'gcc', 2:'g++', 3:'clang', 4:'clang++' }
-    let g:code_runner_compiler = s:SelectFromDictionary(s:compilers, g:code_runner_compiler)
+    let s:code_runner_compiler = s:SelectFromDictionary(s:compilers, s:code_runner_compiler)
 
     let s:standards = { 1:'c99', 2:'c11', 3:'c++98', 4:'c++03', 5:'c++11', 6:'c++14', 7:'c++17', 8:'c++2a' }
-    let g:code_runner_standard = s:SelectFromDictionary(s:standards, g:code_runner_standard)
+    let s:code_runner_standard = s:SelectFromDictionary(s:standards, s:code_runner_standard)
 
     call inputsave()
-    let g:code_runner_flags = input('Enter flags (e.g. -O2 -g): ', g:code_runner_flags)
+    let s:code_runner_flags = input('Enter flags (e.g. -O2 -g): ', s:code_runner_flags)
     call inputrestore()
 
     call inputsave()
-    let g:code_runner_libs = input('Enter libs (e.g. -lboost_system -lboost_..): ', g:code_runner_libs)
+    let s:code_runner_libs = input('Enter libs (e.g. -lboost_system -lboost_..): ', s:code_runner_libs)
     call inputrestore()
 
     call s:DoCompile()
 endfunction
 
 function! s:DirectCompile()
-    if empty(g:code_runner_compiler)
+    if empty(s:code_runner_compiler)
         call s:InteractiveCompile()
     else
+        call s:InitVars()
         call s:DoCompile()
     endif
 endfunction
