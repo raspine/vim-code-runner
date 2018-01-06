@@ -33,6 +33,8 @@ let g:code_runner_standard = 'c++14'
 let g:code_runner_flags = '-O2'
 let g:code_runner_libs = ''
 ```
+## Installation
+Use your Vim package manager.
 
 ## License
 
