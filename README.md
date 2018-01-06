@@ -3,14 +3,14 @@
 ### Single file compiler/runner for c/c++ code ###
 I wanted a simple way to compile and run code snippets directly in Vim.
 
-Some websites like http://en.cppreference.com/w/ offers a convenient way to
-select compiler/standard in their web code runner and I wanted something similar.
+Some websites like http://en.cppreference.com offers a convenient way to
+select compiler/standard in a web code runner and I wanted something similar.
 
 vim-code-runner lets you choose compiler/standard and extends to also let you
 choose flags/libs interactively,
 
 If you have the [AsyncRun plugin](https://github.com/skywind3000/asyncrun.vim)
-installed, it will be used automatically so you can use the quickfix window
+installed, it will be used automatically so you can use the quickfix
 with `:cnext` and friends.
 
 ## Commands
@@ -24,8 +24,8 @@ Compiles directly using the last settings from `:InteractiveCompile`.
 Runs the executable.
 
 ## Variables
-These variables can be set according to your preference as a default start
-(and be able to run DirectCompile directly).
+These variables can be set if you want defaults.
+If set, `DirectCompile` works directly without first doing `InteractiveCompile`.
 
 ```vimL
 let g:code_runner_compiler = 'g++'
