@@ -85,7 +85,7 @@ function! s:InteractiveCompile()
     let s:compilers = { 1:'gcc', 2:'g++', 3:'clang', 4:'clang++' }
     let s:code_runner_compiler = s:SelectFromDictionary(s:compilers, s:code_runner_compiler)
 
-    let s:standards = { 1:'c99', 2:'c11', 3:'c++98', 4:'c++03', 5:'c++11', 6:'c++14', 7:'c++17', 8:'c++2a' }
+    let s:standards = { 1:'c99', 2:'c11', 3:'c++98', 4:'c++03', 5:'c++11', 6:'c++14', 7:'c++17'}
     let s:code_runner_standard = s:SelectFromDictionary(s:standards, s:code_runner_standard)
 
     call inputsave()
