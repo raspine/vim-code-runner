@@ -54,13 +54,25 @@ function! s:SelectFromDictionary(dict, default)
         else
             let s:sel = input('Select index:', s:GetKeyFromValue(a:dict, a:default))
         endif
+        echo "\n"
         call inputrestore()
+        if s:sel == ''
+            return ''
+        endif
         if s:sel < 1 || s:sel > len(a:dict)
             echoerr s:sel . "Please select a number within range"
         else
             return get(a:dict, s:sel)
         endif
     endwhile
+endfunction
+
+function! s:CheckFileType()
+    if (&ft!='c' && &ft!='cpp')
+        echoerr 'Filetype not supported, check that your active window is a c/c++ file'
+        return 1
+    endif
+    return 0
 endfunction
 
 function! s:DoCompile()
@@ -81,20 +93,43 @@ function! s:DoCompile()
 endfunction
 
 function! s:InteractiveCompile()
+    if s:CheckFileType()
+        return
+    endif
     call s:InitVars()
     let s:compilers = { 1:'gcc', 2:'g++', 3:'clang', 4:'clang++' }
-    let s:code_runner_compiler = s:SelectFromDictionary(s:compilers, s:code_runner_compiler)
+    let s:tmp = s:SelectFromDictionary(s:compilers, s:code_runner_compiler)
+    if empty(s:tmp)
+        return
+    endif
+    let s:code_runner_compiler = s:tmp
 
     let s:standards = { 1:'c99', 2:'c11', 3:'c++98', 4:'c++03', 5:'c++11', 6:'c++14', 7:'c++17'}
-    let s:code_runner_standard = s:SelectFromDictionary(s:standards, s:code_runner_standard)
+    let s:tmp = s:SelectFromDictionary(s:standards, s:code_runner_standard)
+    if empty(s:tmp)
+        return
+    endif
+    let s:code_runner_standard = s:tmp
 
     call inputsave()
-    let s:code_runner_flags = input('Enter flags (e.g. -O2 -g): ', s:code_runner_flags)
+    let s:tmp = input('Enter flags (e.g. -O2 -g): ', s:code_runner_flags)
     call inputrestore()
+    " TODO: how check difference between pressing esc (meaning abort) or return
+    " (meaning enter empty string)
+    " if empty(s:tmp)
+    "     return
+    " endif
+    let s:code_runner_flags = s:tmp
 
     call inputsave()
-    let s:code_runner_libs = input('Enter libs (e.g. -lboost_system -lboost_..): ', s:code_runner_libs)
+    let s:tmp = input('Enter libs (e.g. -lboost_system -lboost_..): ', s:code_runner_libs)
     call inputrestore()
+    " TODO: how check difference between pressing esc (meaning abort) or return
+    " (meaning enter empty string)
+    " if empty(s:tmp)
+    "     return
+    " endif
+    let s:code_runner_libs = s:tmp
 
     call s:DoCompile()
 endfunction
