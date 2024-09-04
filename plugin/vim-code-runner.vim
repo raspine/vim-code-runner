@@ -104,7 +104,7 @@ function! s:InteractiveCompile()
     endif
     let s:code_runner_compiler = s:tmp
 
-    let s:standards = { 1:'c99', 2:'c11', 3:'c++98', 4:'c++03', 5:'c++11', 6:'c++14', 7:'c++17'}
+    let s:standards = { 1:'c99', 2:'c11', 3:'c++98', 4:'c++03', 5:'c++11', 6:'c++14', 7:'c++17', 8:'c++20', 9:'c++23'}
     let s:tmp = s:SelectFromDictionary(s:standards, s:code_runner_standard)
     if empty(s:tmp)
         return
